@@ -1,31 +1,59 @@
 import {
-	Links,
-	Meta,
 	Outlet,
 	Scripts,
 	ScrollRestoration,
+	isRouteErrorResponse,
+	useRouteError
 } from "@remix-run/react";
 import '@radix-ui/themes/styles.css';
-import './main.css';
-import { Theme } from '@radix-ui/themes';
+import '~/styles/main.css';
+
+import { Box, Container, Theme } from '@radix-ui/themes';
+import Footer from '~/components/partials/footer';
+import Head from '~/components/partials/head';
+import Header from '~/components/partials/header';
+
 
 export function Layout({ children }: { children: React.ReactNode }) {
 	return (
 		<html lang="en">
-			<head>
-				<meta charSet="utf-8" />
-				<meta name="viewport" content="width=device-width, initial-scale=1" />
-				<Meta />
-				<Links />
-			</head>
+			<Head />
 			<body>
 				<Theme>
-					{children}
+					<Container size="3">
+						<Header />
+						<Box mt="4">
+							{children}
+						</Box>
+						<Footer />
+					</Container>
 					<ScrollRestoration />
 					<Scripts />
 				</Theme>
 			</body>
 		</html>
+	);
+}
+
+export function ErrorBoundary() {
+	const error = useRouteError();
+
+	if (isRouteErrorResponse(error)) {
+		return (
+			<>
+				<h1>
+					{error.status} {error.statusText}
+				</h1>
+				<p>{error.data}</p>
+			</>
+		);
+	}
+
+	return (
+		<>
+			<h1>Error!</h1>
+			<p>{"Unknown error"}</p>
+		</>
 	);
 }
 
