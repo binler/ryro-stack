@@ -1,22 +1,39 @@
 import { Box, Flex, Heading, Link } from '@radix-ui/themes';
 import { NavLink } from "@remix-run/react";
 
-export default function Header() {
+interface Nav {
+    name: string;
+    url: string;
+}
+
+const Menu: Nav[] = [
+    { name: 'Home', url: '/' },
+    { name: 'About', url: '/about' },
+    { name: 'Topics', url: '/topic' },
+    { name: 'Sign in', url: '#' },
+    { name: 'Sign up', url: '#' }
+];
+
+const NavItem: React.FC<Nav> = ({ name, url }) => (
+    <Link asChild>
+        <NavLink to={url}>{name}</NavLink>
+    </Link>
+);
+
+
+const Header: React.FC = () => {
     return (
         <Box style={{ background: 'var(--red)' }}>
             <Flex align="center" justify="between">
                 <Heading size="8">Logo</Heading>
                 <Flex gap="4">
-                    <Link asChild>
-                        <NavLink to="/">Home</NavLink>
-                    </Link>
-                    <Link asChild>
-                        <NavLink to="/about">About</NavLink>
-                    </Link>
-                    <NavLink to="#">Sign up</NavLink>
-                    <NavLink to="#">Sign in</NavLink>
+                    {Menu.map((item) => (
+                        <NavItem key={item.name} {...item} />
+                    ))}
                 </Flex>
             </Flex>
         </Box>
     );
-}
+};
+
+export default Header;
