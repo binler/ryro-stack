@@ -1,6 +1,10 @@
+
+import { Avatar } from "@radix-ui/themes";
 import { json } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
 import type { MetaFunction } from "@remix-run/node";
+import { useLoaderData } from "@remix-run/react";
+import type { ColumnDef } from "@tanstack/react-table";
+import { MyTable } from "~/components/mytable";
 
 export const meta: MetaFunction = () => {
     return [
@@ -10,20 +14,49 @@ export const meta: MetaFunction = () => {
 };
 
 export async function loader() {
-    const res = await fetch("https://api.github.com/gists");
+    const res = await fetch("https://api.artic.edu/api/v1/artworks");
     return json(await res.json());
 }
 
+interface ArtWork {
+    id: number,
+    title: string;
+    inscriptions: string,
+    color: {
+        population: number
+    },
+    thumbnail: {
+        lqip: string,
+        alt_text: string
+    }
+}
+
 export default function Gist() {
-    const gists = useLoaderData<typeof loader>();
+    const artworks = useLoaderData<typeof loader>();
+    const columns: ColumnDef<ArtWork>[] = [
+        {
+            header: "ID",
+            accessorKey: "id",
+        },
+        {
+            header: "Title",
+            accessorKey: "title",
+        },
+        {
+            header: "Inscriptions",
+            accessorKey: "inscriptions",
+        },
+        {
+            header: "Population",
+            accessorKey: "color.population",
+        },
+        {
+            accessorKey: 'thumbnail',
+            cell: ({ row }) => <Avatar fallback="A" size="4" src={row.original.thumbnail.lqip} />,
+        }
+    ];
 
     return (
-        <ul>
-            {gists.map((gist: any) => (
-                <li key={gist.id}>
-                    <a href={gist.html_url}>{gist.id}</a>
-                </li>
-            ))}
-        </ul>
+        <MyTable columns={columns} data={artworks.data} />
     )
 }
