@@ -9,9 +9,19 @@ import '@radix-ui/themes/styles.css';
 import '~/styles/main.css';
 
 import { Box, Container, Theme } from '@radix-ui/themes';
+import type { MetaFunction, } from "@remix-run/node";
+import BreadCrumb from "~/components/partials/breadcrumb";
 import Footer from '~/components/partials/footer';
+import GlobalLoading from "~/components/partials/globalloading";
 import Head from '~/components/partials/head';
 import Header from '~/components/partials/header';
+
+export const meta: MetaFunction = ({ matches }) => {
+	const parentMeta = matches
+		.flatMap((match) => match.meta ?? [])
+		.filter((meta) => !("title" in meta));
+	return [...parentMeta, { title: "RyRo-Stack" }];
+};
 
 
 export function Layout({ children }: { children: React.ReactNode }) {
@@ -20,8 +30,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
 			<Head />
 			<body>
 				<Theme>
+					<GlobalLoading />
 					<Container size="3">
 						<Header />
+						<BreadCrumb />
 						<Box mt="4">
 							{children}
 						</Box>
@@ -40,21 +52,25 @@ export function ErrorBoundary() {
 
 	if (isRouteErrorResponse(error)) {
 		return (
-			<>
+			<div>
 				<h1>
 					{error.status} {error.statusText}
 				</h1>
 				<p>{error.data}</p>
-			</>
+			</div>
 		);
+	} else if (error instanceof Error) {
+		return (
+			<div>
+				<h1>Error</h1>
+				<p>{error.message}</p>
+				<p>The stack trace is:</p>
+				<pre>{error.stack}</pre>
+			</div>
+		);
+	} else {
+		return <h1>Unknown Error</h1>;
 	}
-
-	return (
-		<>
-			<h1>Error!</h1>
-			<p>{"Unknown error"}</p>
-		</>
-	);
 }
 
 export default function App() {
