@@ -1,11 +1,24 @@
 import { Table } from '@radix-ui/themes';
-import type { MetaFunction } from "@remix-run/node";
+import type { MetaFunction, } from "@remix-run/node";
+import {
+	Link
+} from "@remix-run/react";
 
 export const meta: MetaFunction = () => {
 	return [
 		{ title: "Home page" },
 		{ name: "description", content: "Welcome to Remix!" },
 	];
+};
+
+export async function loader() {
+	return new Promise((resolve) => {
+		setTimeout(() => resolve("Profile"), 3000); // represents long request
+	});
+}
+
+export const handle = {
+	breadcrumb: () => <Link to="/">Home</Link>,
 };
 
 export default function Index() {
