@@ -2,7 +2,7 @@
 import { Avatar } from "@radix-ui/themes";
 import { json } from "@remix-run/node";
 import type { MetaFunction } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { Link, useLoaderData } from "@remix-run/react";
 import type { ColumnDef } from "@tanstack/react-table";
 import { MyTable } from "~/components/mytable";
 
@@ -11,6 +11,10 @@ export const meta: MetaFunction = () => {
         { title: "Gists" },
         { name: "description", content: "Welcome to Gists" },
     ];
+};
+
+export const handle = {
+    breadcrumb: () => <Link to="/gist">Gists</Link>,
 };
 
 export async function loader() {

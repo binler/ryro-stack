@@ -9,7 +9,7 @@ interface Nav {
 const Menu: Nav[] = [
     { name: 'Home', url: '/' },
     { name: 'About', url: '/about' },
-    { name: 'Topics', url: '/topic' },
+    { name: 'Gists', url: '/gist' },
     { name: 'Sign in', url: '#' },
     { name: 'Sign up', url: '#' }
 ];

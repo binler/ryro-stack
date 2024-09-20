@@ -12,9 +12,9 @@ import { Box, Container, Theme } from '@radix-ui/themes';
 import type { MetaFunction, } from "@remix-run/node";
 import BreadCrumb from "~/components/partials/breadcrumb";
 import Footer from '~/components/partials/footer';
-import GlobalLoading from "~/components/partials/globalloading";
 import Head from '~/components/partials/head';
 import Header from '~/components/partials/header';
+import Loading from "~/components/partials/loading";
 
 export const meta: MetaFunction = ({ matches }) => {
 	const parentMeta = matches
@@ -30,8 +30,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
 			<Head />
 			<body>
 				<Theme>
-					<GlobalLoading />
-					<Container size="3">
+					<Loading />
+					<Container size="4" height={'100vh'}>
 						<Header />
 						<BreadCrumb />
 						<Box mt="4">
@@ -59,7 +59,8 @@ export function ErrorBoundary() {
 				<p>{error.data}</p>
 			</div>
 		);
-	} else if (error instanceof Error) {
+	}
+	if (error instanceof Error) {
 		return (
 			<div>
 				<h1>Error</h1>
@@ -68,9 +69,8 @@ export function ErrorBoundary() {
 				<pre>{error.stack}</pre>
 			</div>
 		);
-	} else {
-		return <h1>Unknown Error</h1>;
 	}
+	return <h1>Unknown Error</h1>;
 }
 
 export default function App() {
