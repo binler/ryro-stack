@@ -1,6 +1,10 @@
 # Welcome to RyRo-Stack!
 
-- 📖 [Remix docs](https://remix.run/docs)
+## Features
+- 📖 [Remix](https://remix.run/docs)
+- [Django](https://www.djangoproject.com/)
+- [Django Ninja](https://django-ninja.dev/)
+- [Biome](https://biomejs.dev) format, lint, and more
 
 ## Development
 
@@ -8,6 +12,18 @@ Run the dev server:
 
 ```shellscript
 npm run dev
+```
+
+Run API
+
+```shellscript
+python manage.py runserver
+```
+
+Run migration
+
+```shellscript
+python manage.py migrate
 ```
 
 ## Deployment

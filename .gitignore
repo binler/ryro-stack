@@ -4,3 +4,7 @@ node_modules
 /build
 .env
 .yarn
+
+
+venv
+__pycache__
